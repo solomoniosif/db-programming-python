@@ -5,13 +5,10 @@ from secrets import host, password, user
 
 #! 1. Connect genericaly to MySQL and create the todo_app database
 db = pymysql.connect(host, user, password, "")
-
 create_database = "CREATE DATABASE IF NOT EXISTS todo_app DEFAULT CHARACTER SET utf8;"
-
 with db.cursor() as c:
     c._defer_warnings = True
     c.execute(create_database)
-
 db.close()
 
 #! 2. CONNECT to newly created database
@@ -19,17 +16,16 @@ db = pymysql.connect(host, user, password, "todo_app")
 
 
 #! 3.  CREATE tasks table
-# create_table = """CREATE TABLE IF NOT EXISTS tasks(
-#         id INT PRIMARY KEY AUTO_INCREMENT,
-#         task TEXT NOT NULL,
-#         done TINYINT(1)),
-#         tags TEXT;"""
-# # * SQL Statement to add a `tags` column to `tasks` table
-# # alter_table = "ALTER TABLE tasks ADD tags TEXT"
-# with db.cursor() as c:
-#     c._defer_warnings = True
-#     c.execute(create_table)
-# db.close()
+create_table = """CREATE TABLE IF NOT EXISTS tasks(
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        task TEXT NOT NULL,
+        done TINYINT(1));"""
+# * SQL Statement to add a `tags` column to `tasks` table
+# alter_table = "ALTER TABLE tasks ADD tags TEXT"
+with db.cursor() as c:
+    c._defer_warnings = True
+    c.execute(create_table)
+db.close()
 
 
 # * Functions to comunicate with the database based on user input
@@ -39,7 +35,7 @@ def show_task_list(c):
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
     print(' This are all the unfinished tasks!')
-    print(tabulate(rows, headers))
+    print(tabulate(rows, headers, tablefmt="psql"))
 
 
 def mark_as_done(c, db, task_id):
@@ -59,7 +55,7 @@ def show_completed_tasks(c):
     c.execute(sql_c)
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
-    print(tabulate(rows, headers))
+    print(tabulate(rows, headers, tablefmt="psql"))
 
 
 def delete_task(c, db, task_id):
@@ -81,7 +77,7 @@ def find_task_by_tag(c, db, tag):
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
     print(f' This are all the tasks with tha tag : `{tag}`')
-    print(tabulate(rows, headers))
+    print(tabulate(rows, headers, tablefmt="psql"))
 
 
 if __name__ == "__main__":
@@ -130,5 +126,4 @@ if __name__ == "__main__":
                 delete_task(c, db, task_id)
             elif option == 8:  # * Exit application
                 break
-
     db.close()
