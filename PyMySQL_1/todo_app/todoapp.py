@@ -34,7 +34,7 @@ def show_task_list(c):
     c.execute(select_stmt)
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
-    print(' This are all the unfinished tasks!')
+    print(' These are all the unfinished tasks!')
     print(tabulate(rows, headers, tablefmt="psql"))
 
 
@@ -42,12 +42,14 @@ def mark_as_done(c, db, task_id):
     sql_c = "UPDATE tasks SET done = 1 WHERE id = %s"
     c.execute(sql_c, task_id)
     db.commit()
+    print(f'Task no {task_id} was marked as done!')
 
 
 def add_new_task(c, db, task_name):
     sql_c = "INSERT INTO tasks(task, done) VALUES(%s, 0)"
     c.execute(sql_c, task_name)
     db.commit()
+    print('New task was added!')
 
 
 def show_completed_tasks(c):
@@ -55,6 +57,7 @@ def show_completed_tasks(c):
     c.execute(sql_c)
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
+    print(' These are all the completed tasks')
     print(tabulate(rows, headers, tablefmt="psql"))
 
 
@@ -62,12 +65,14 @@ def delete_task(c, db, task_id):
     sql_c = "DELETE FROM tasks WHERE id = %s"
     c.execute(sql_c, task_id)
     db.commit()
+    print(f'The task no {task_id} was deleted!')
 
 
 def add_tags_to_task(c, db, task_id, tags):
     sql_c = "UPDATE tasks SET tags = %s WHERE id = %s"
     c.execute(sql_c, (tags, task_id))
     db.commit()
+    print(f'The tag/s: {tags} were added to task no {task_id}')
 
 
 def find_task_by_tag(c, db, tag):
@@ -76,7 +81,7 @@ def find_task_by_tag(c, db, tag):
     c.execute(sql_c, f_tag)
     rows = c.fetchall()
     headers = [d[0] for d in c.description]
-    print(f' This are all the tasks with tha tag : `{tag}`')
+    print(f' This are all the tasks with the tag : `{tag}`')
     print(tabulate(rows, headers, tablefmt="psql"))
 
 
