@@ -1,3 +1,6 @@
+.vscode
 PyMySQL_1/secrets.py
 PyMySQL_1/todo_app/secrets.py
+PyMySQL_1/__pycache__
+PyMySQL_1/todo_app/__pycache__
 
