@@ -3,4 +3,7 @@ PyMySQL_1/secrets.py
 PyMySQL_1/todo_app/secrets.py
 PyMySQL_1/__pycache__
 PyMySQL_1/todo_app/__pycache__
-
+SQLAlchemy_2/__pycache__
+SQLAlchemy_2/secrets.py
+venv/
+SQLAlchemy_2/sqlalenv
